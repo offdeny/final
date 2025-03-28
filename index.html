@@ -6,41 +6,25 @@
     <title>КиноГид - персонализированные рекомендации</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Arial', sans-serif;
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f8f9fa;
-            color: #333;
+            background-color: #121212;
+            color: #e0e0e0;
             min-height: 100vh;
         }
         
-        /* Новый дизайн заголовка */
+        /* Строгий заголовок */
         header {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background-color: #1e1e1e;
             color: white;
             padding: 20px;
-            border-radius: 10px;
             margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        header::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
-            transform: rotate(30deg);
+            border-bottom: 1px solid #333;
         }
         
         .header-content {
-            position: relative;
-            z-index: 1;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -53,11 +37,6 @@
             color: white;
             font-weight: bold;
             font-size: 24px;
-            transition: transform 0.3s;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
         }
         
         .logo-icon {
@@ -67,16 +46,17 @@
         
         .tagline {
             font-size: 16px;
-            opacity: 0.9;
+            opacity: 0.8;
             margin-top: 5px;
         }
         
+        /* Строгий дизайн поиска */
         .search-box {
             display: flex;
             margin-bottom: 25px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            background: #1e1e1e;
+            border-radius: 4px;
+            border: 1px solid #333;
             overflow: hidden;
         }
         
@@ -86,22 +66,26 @@
             border: none;
             font-size: 16px;
             outline: none;
+            background: #1e1e1e;
+            color: #e0e0e0;
         }
         
         #search-btn {
             padding: 12px 25px;
-            background-color: #4e54c8;
+            background-color: #333;
             color: white;
             border: none;
             font-size: 16px;
             cursor: pointer;
+            border-left: 1px solid #444;
             transition: background-color 0.3s;
         }
         
         #search-btn:hover {
-            background-color: #4348a8;
+            background-color: #444;
         }
         
+        /* Карточки фильмов */
         .recommendations {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -109,16 +93,16 @@
         }
         
         .movie-card {
-            background-color: white;
-            border-radius: 10px;
+            background-color: #1e1e1e;
+            border-radius: 4px;
             overflow: hidden;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
+            border: 1px solid #333;
+            transition: transform 0.3s;
         }
         
         .movie-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            border-color: #555;
         }
         
         .movie-poster {
@@ -129,18 +113,9 @@
             position: relative;
         }
         
-        .movie-poster::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
-        }
-        
         .movie-info {
             padding: 15px;
+            border-top: 1px solid #333;
         }
         
         .movie-title {
@@ -149,10 +124,11 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            color: white;
         }
         
         .movie-genre {
-            color: #6c757d;
+            color: #aaa;
             font-size: 14px;
         }
         
@@ -164,35 +140,28 @@
         footer {
             margin-top: 40px;
             text-align: center;
-            color: #6c757d;
+            color: #666;
             font-size: 14px;
             padding: 20px;
+            border-top: 1px solid #333;
         }
         
         .no-results {
             text-align: center;
             padding: 40px;
-            color: #6c757d;
+            color: #666;
             font-size: 18px;
             grid-column: 1 / -1;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            background: #1e1e1e;
+            border-radius: 4px;
+            border: 1px solid #333;
         }
         
-        /* Нейтральный фон с тонкой текстурой */
-        body::after {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: radial-gradient(#ddd 1px, transparent 1px);
-            background-size: 15px 15px;
-            opacity: 0.1;
-            pointer-events: none;
-            z-index: -1;
+        h2 {
+            color: white;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
@@ -280,7 +249,7 @@
                 genre: "Фантастика, Боевик", 
                 year: 2010,
                 rating: 8.8,
-                poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_FMjpg_UX1000_.jpg"
+                poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_FMjpg_UX1000_.jpg"
             },
             { 
                 title: "Форрест Гамп", 
@@ -373,4 +342,64 @@
             const container = document.getElementById('recommendations');
             container.innerHTML = '';
             
-           
+            if (movies.length === 0) {
+                container.innerHTML = '<div class="no-results">Ничего не найдено. Попробуйте изменить запрос.</div>';
+                return;
+            }
+            
+            movies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                
+                card.innerHTML = `
+                    <div class="movie-poster" style="background-image: url('${movie.poster}')"></div>
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-genre">${movie.genre} • ${movie.year} • <span class="rating">${movie.rating}</span></div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Функция поиска
+        function searchMovies(query) {
+            if (!query) return moviesDatabase;
+            
+            const lowerQuery = query.toLowerCase();
+            return moviesDatabase.filter(movie => 
+                movie.title.toLowerCase().includes(lowerQuery) ||
+                movie.genre.toLowerCase().includes(lowerQuery) ||
+                movie.year.toString().includes(lowerQuery)
+            );
+        }
+
+        // Функция показа всех фильмов
+        function showAllMovies() {
+            document.getElementById('movie-input').value = '';
+            showMovies(moviesDatabase);
+            return false;
+        }
+
+        // Обработчик поиска
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const query = document.getElementById('movie-input').value;
+            const results = searchMovies(query);
+            showMovies(results);
+        });
+
+        // Обработчик поиска при нажатии Enter
+        document.getElementById('movie-input').addEventListener('keyup', function(e) {
+            if (e.key === 'Enter') {
+                const query = document.getElementById('movie-input').value;
+                const results = searchMovies(query);
+                showMovies(results);
+            }
+        });
+
+        // Показываем все фильмы при загрузке
+        showAllMovies();
+    </script>
+</body>
+</html>
