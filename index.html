@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КиноГид - персонализированные рекомендации</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-box {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        #movie-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 16px;
+        }
+        #search-btn {
+            padding: 10px 20px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #search-btn:hover {
+            background-color: #c0392b;
+        }
+        .recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+        }
+        .movie-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .movie-card:hover {
+            transform: translateY(-5px);
+        }
+        .movie-poster {
+            width: 100%;
+            height: 250px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+        }
+        .movie-info {
+            padding: 15px;
+        }
+        .movie-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .movie-genre {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>КиноГид</h1>
+        <p>Персонализированные рекомендации фильмов</p>
+    </header>
+
+    <div class="search-box">
+        <input type="text" id="movie-input" placeholder="Введите название фильма, который вам нравится...">
+        <button id="search-btn">Найти рекомендации</button>
+    </div>
+
+    <h2>Рекомендуем посмотреть:</h2>
+    <div class="recommendations" id="recommendations">
+        <!-- Рекомендации будут загружены здесь -->
+    </div>
+
+    <footer>
+        <p>© 2024 КиноГид | Персональный подбор фильмов на основе ваших предпочтений</p>
+    </footer>
+
+    <script>
+        // Mock-данные с рекомендациями
+        const mockMovies = [
+            { title: "Дюна: Часть вторая", genre: "Фантастика, Драма", year: 2024 },
+            { title: "Оппенгеймер", genre: "Исторический, Драма", year: 2023 },
+            { title: "Бегущий по лезвию 2049", genre: "Фантастика, Нуар", year: 2017 },
+            { title: "Чужой", genre: "Ужасы, Фантастика", year: 1979 },
+            { title: "Крестный отец", genre: "Криминал, Драма", year: 1972 },
+            { title: "Паразиты", genre: "Триллер, Драма", year: 2019 }
+        ];
+
+        // Функция для отображения рекомендаций
+        function showRecommendations() {
+            const container = document.getElementById('recommendations');
+            container.innerHTML = '';
+            
+            mockMovies.forEach(movie => {
+                const card = document.createElement('div');
+                card.className = 'movie-card';
+                
+                card.innerHTML = `
+                    <div class="movie-poster">${movie.title.split(' ')[0]}</div>
+                    <div class="movie-info">
+                        <div class="movie-title">${movie.title}</div>
+                        <div class="movie-genre">${movie.genre} • ${movie.year}</div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Имитация поиска
+        document.getElementById('search-btn').addEventListener('click', function() {
+            const input = document.getElementById('movie-input').value;
+            if (input.trim() !== '') {
+                alert(`Ищем рекомендации по фильму: "${input}"\n(В этом демо всегда показываются тестовые данные)`);
+                showRecommendations();
+            }
+        });
+
+        // Показываем рекомендации при загрузке
+        showRecommendations();
+    </script>
+</body>
+</html>
