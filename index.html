@@ -10,65 +10,139 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f5f5f5;
+            background-color: #f8f9fa;
             color: #333;
+            min-height: 100vh;
         }
+        
+        /* Новый дизайн заголовка */
         header {
-            background-color: #2c3e50;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
             padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
         }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            font-size: 24px;
+            transition: transform 0.3s;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-icon {
+            margin-right: 15px;
+            font-size: 28px;
+        }
+        
+        .tagline {
+            font-size: 16px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
         .search-box {
             display: flex;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
         }
+        
         #movie-input {
             flex-grow: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
+            padding: 12px 15px;
+            border: none;
             font-size: 16px;
+            outline: none;
         }
+        
         #search-btn {
-            padding: 10px 20px;
-            background-color: #e74c3c;
+            padding: 12px 25px;
+            background-color: #4e54c8;
             color: white;
             border: none;
-            border-radius: 0 4px 4px 0;
-            cursor: pointer;
             font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
+        
         #search-btn:hover {
-            background-color: #c0392b;
+            background-color: #4348a8;
         }
+        
         .recommendations {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 20px;
         }
+        
         .movie-card {
             background-color: white;
-            border-radius: 8px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
         }
+        
         .movie-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+        
         .movie-poster {
             width: 100%;
             height: 250px;
-            background-color: #eee;
             background-size: cover;
             background-position: center;
+            position: relative;
         }
+        
+        .movie-poster::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+        }
+        
         .movie-info {
             padding: 15px;
         }
+        
         .movie-title {
             font-weight: bold;
             margin-bottom: 5px;
@@ -76,33 +150,63 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        
         .movie-genre {
-            color: #7f8c8d;
+            color: #6c757d;
             font-size: 14px;
         }
+        
+        .rating {
+            color: #ffc107;
+            font-weight: bold;
+        }
+        
         footer {
             margin-top: 40px;
             text-align: center;
-            color: #7f8c8d;
+            color: #6c757d;
             font-size: 14px;
+            padding: 20px;
         }
+        
         .no-results {
             text-align: center;
             padding: 40px;
-            color: #7f8c8d;
+            color: #6c757d;
             font-size: 18px;
             grid-column: 1 / -1;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
         }
-        .rating {
-            color: #f39c12;
-            font-weight: bold;
+        
+        /* Нейтральный фон с тонкой текстурой */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(#ddd 1px, transparent 1px);
+            background-size: 15px 15px;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
     <header>
-        <h1>КиноГид</h1>
-        <p>Персонализированные рекомендации фильмов</p>
+        <div class="header-content">
+            <a href="#" class="logo" onclick="showAllMovies()">
+                <span class="logo-icon">🎬</span>
+                <div>
+                    <div>КиноГид</div>
+                    <div class="tagline">Ваш персональный гид по кино</div>
+                </div>
+            </a>
+        </div>
     </header>
 
     <div class="search-box">
@@ -269,57 +373,4 @@
             const container = document.getElementById('recommendations');
             container.innerHTML = '';
             
-            if (movies.length === 0) {
-                container.innerHTML = '<div class="no-results">Ничего не найдено. Попробуйте изменить запрос.</div>';
-                return;
-            }
-            
-            movies.forEach(movie => {
-                const card = document.createElement('div');
-                card.className = 'movie-card';
-                
-                card.innerHTML = `
-                    <div class="movie-poster" style="background-image: url('${movie.poster}')"></div>
-                    <div class="movie-info">
-                        <div class="movie-title">${movie.title}</div>
-                        <div class="movie-genre">${movie.genre} • ${movie.year} • <span class="rating">${movie.rating}</span></div>
-                    </div>
-                `;
-                
-                container.appendChild(card);
-            });
-        }
-
-        // Функция поиска
-        function searchMovies(query) {
-            if (!query) return moviesDatabase;
-            
-            const lowerQuery = query.toLowerCase();
-            return moviesDatabase.filter(movie => 
-                movie.title.toLowerCase().includes(lowerQuery) ||
-                movie.genre.toLowerCase().includes(lowerQuery) ||
-                movie.year.toString().includes(lowerQuery)
-            );
-        }
-
-        // Обработчик поиска
-        document.getElementById('search-btn').addEventListener('click', function() {
-            const query = document.getElementById('movie-input').value;
-            const results = searchMovies(query);
-            showMovies(results);
-        });
-
-        // Обработчик поиска при нажатии Enter
-        document.getElementById('movie-input').addEventListener('keyup', function(e) {
-            if (e.key === 'Enter') {
-                const query = document.getElementById('movie-input').value;
-                const results = searchMovies(query);
-                showMovies(results);
-            }
-        });
-
-        // Показываем все фильмы при загрузке
-        showMovies(moviesDatabase);
-    </script>
-</body>
-</html>
+           
