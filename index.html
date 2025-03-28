@@ -116,7 +116,7 @@
         
         .recommendations {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 40px;
         }
@@ -136,7 +136,7 @@
         
         .movie-poster {
             width: 100%;
-            height: 250px;
+            height: 280px;
             background-size: cover;
             background-position: center;
             position: relative;
@@ -150,16 +150,22 @@
         .movie-title {
             font-weight: bold;
             margin-bottom: 5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
             color: white;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 44px;
         }
         
         .movie-genre {
             color: #aaa;
             font-size: 14px;
             margin-bottom: 5px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
         
         .movie-year {
@@ -219,12 +225,12 @@
         </div>
         
         <div class="filters">
-            <button class="filter-btn" onclick="sortByRating()">По рейтингу</button>
-            <button class="filter-btn" onclick="sortByYear()">По году выпуска</button>
-            <button class="filter-btn" onclick="filterByGenre('драма')">Драма</button>
-            <button class="filter-btn" onclick="filterByGenre('фантастика')">Фантастика</button>
-            <button class="filter-btn" onclick="filterByGenre('боевик')">Боевик</button>
-            <button class="filter-btn" onclick="filterByGenre('комедия')">Комедия</button>
+            <button class="filter-btn" onclick="toggleSort('rating')">По рейтингу</button>
+            <button class="filter-btn" onclick="toggleSort('year')">По году выпуска</button>
+            <button class="filter-btn" onclick="toggleGenreFilter('драма')">Драма</button>
+            <button class="filter-btn" onclick="toggleGenreFilter('фантастика')">Фантастика</button>
+            <button class="filter-btn" onclick="toggleGenreFilter('боевик')">Боевик</button>
+            <button class="filter-btn" onclick="toggleGenreFilter('комедия')">Комедия</button>
             <button class="filter-btn" onclick="showAllMovies()">Все фильмы</button>
         </div>
     </div>
@@ -239,7 +245,7 @@
     </footer>
 
     <script>
-        // База данных фильмов (50 популярных фильмов с постерами)
+        // База данных фильмов (удалены указанные фильмы)
         const moviesDatabase = [
             { title: "Дюна: Часть вторая", genre: "Фантастика", year: 2024, rating: 8.7, poster: "https://m.media-amazon.com/images/M/MV5BN2FjNmEyNWMtYzM0ZS00NjIyLTg5YzYtYThlMGVjNzE1OGViXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg" },
             { title: "Оппенгеймер", genre: "История, Драма", year: 2023, rating: 8.6, poster: "https://m.media-amazon.com/images/M/MV5BMDBmYTZjNjUtN2M1MS00MTQ2LTk2ODgtNzc2M2QyZGE5NTVjXkEyXkFqcGdeQXVyNzAwMjU2MTY@._V1_.jpg" },
@@ -248,7 +254,6 @@
             { title: "Крестный отец", genre: "Криминал, Драма", year: 1972, rating: 9.2, poster: "https://m.media-amazon.com/images/M/MV5BM2MyNjYxNmUtYTAwNi00MTYxLWJmNWYtYzZlODY3ZTk3OTFlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg" },
             { title: "Паразиты", genre: "Триллер, Драма", year: 2019, rating: 8.5, poster: "https://m.media-amazon.com/images/M/MV5BYWZjMjk3ZTItODQ2ZC00NTY5LWE0ZDYtZTI3MjcwN2Q5NTVkXkEyXkFqcGdeQXVyODk4OTc3MTY@._V1_FMjpg_UX1000_.jpg" },
             { title: "Интерстеллар", genre: "Фантастика, Драма", year: 2014, rating: 8.6, poster: "https://m.media-amazon.com/images/M/MV5BZjdkOTU3MDktN2IxOS00OGEyLWFmMjktY2FiMmZkNWIyODZiXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg" },
-            { title: "Начало", genre: "Фантастика, Боевик", year: 2010, rating: 8.8, poster: "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwODAyMTk2Mw@@._V1_FMjpg_UX1000_.jpg" },
             { title: "Форрест Гамп", genre: "Драма, Романтика", year: 1994, rating: 8.8, poster: "https://m.media-amazon.com/images/M/MV5BNWIwODRlZTUtY2U3ZS00Yzg1LWJhNzYtMmZiYmEyNmU1NjMzXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_FMjpg_UX1000_.jpg" },
             { title: "Бойцовский клуб", genre: "Драма", year: 1999, rating: 8.8, poster: "https://m.media-amazon.com/images/M/MV5BNDIzNDU0YzEtYzE5Ni00ZjlkLTk5ZjgtNjM3NWE4YzA3Nzk3XkEyXkFqcGdeQXVyMjUzOTY1NTc@._V1_FMjpg_UX1000_.jpg" },
             { title: "Криминальное чтиво", genre: "Криминал, Драма", year: 1994, rating: 8.9, poster: "https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_FMjpg_UX1000_.jpg" },
@@ -271,13 +276,11 @@
             { title: "Красота по-американски", genre: "Драма", year: 1999, rating: 8.3, poster: "https://m.media-amazon.com/images/M/MV5BNTBmZWJkNjctNDhiNC00MGE2LWEwOTctZTk5OGVhMWMyNmVhXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg" },
             { title: "Гравитация", genre: "Фантастика, Триллер", year: 2013, rating: 7.7, poster: "https://m.media-amazon.com/images/M/MV5BNjE5MzYwMzYxMF5BMl5BanBnXkFtZTcwOTk4MTk0OQ@@._V1_FMjpg_UX1000_.jpg" },
             { title: "Одержимость", genre: "Драма, Музыка", year: 2014, rating: 8.5, poster: "https://m.media-amazon.com/images/M/MV5BOTA5NDZlZGUtMjAxOS00YTRkLTkwYmMtYWQ0NWEwZDZiNjEzXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg" },
-            { title: "Достать ножи", genre: "Комедия, Детектив", year: 2019, rating: 7.9, poster: "https://m.media-amazon.com/images/M/MV5BMTg2ODIwMTY0OV5BMl5BanBnXkFtZTgwMjA3OTI1NjM@._V1_FMjpg_UX1000_.jpg" },
             { title: "Джанго освобожденный", genre: "Вестерн, Драма", year: 2012, rating: 8.4, poster: "https://m.media-amazon.com/images/M/MV5BMjIyNTQ5NjQ1OV5BMl5BanBnXkFtZTcwODg1MDU4OA@@._V1_FMjpg_UX1000_.jpg" },
             { title: "Остров проклятых", genre: "Триллер, Детектив", year: 2010, rating: 8.2, poster: "https://m.media-amazon.com/images/M/MV5BYzhiNDkyNzktNTZmYS00ZTBkLTk2MDAtM2U0YjU1MzgxZjgzXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg" },
             { title: "Гран Торино", genre: "Драма", year: 2008, rating: 8.1, poster: "https://m.media-amazon.com/images/M/MV5BMTc5NTk2OTU1Nl5BMl5BanBnXkFtZTcwMDc3NjAwMg@@._V1_FMjpg_UX1000_.jpg" },
             { title: "Старикам тут не место", genre: "Триллер, Криминал", year: 2007, rating: 8.1, poster: "https://m.media-amazon.com/images/M/MV5BMjA5Njk3MjM4OV5BMl5BanBnXkFtZTcwMTc5MTE1MQ@@._V1_FMjpg_UX1000_.jpg" },
             { title: "Малышка на миллион", genre: "Драма, Спорт", year: 2004, rating: 8.1, poster: "https://m.media-amazon.com/images/M/MV5BMTkxNzA1NDQxOV5BMl5BanBnXkFtZTcwNTkyMTIzMw@@._V1_FMjpg_UX1000_.jpg" },
-            { title: "Авиатор", genre: "Драма, Биография", year: 2004, rating: 7.5, poster: "https://m.media-amazon.com/images/M/MV5BZDIzZjRhYzQtYzVlYi00NmM1LThkNzQtNTJkM2U1YzI3N2NlXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_FMjpg_UX1000_.jpg" },
             { title: "Реквием по мечте", genre: "Драма", year: 2000, rating: 8.3, poster: "https://m.media-amazon.com/images/M/MV5BOTdiNzJlOWUtNWMwNS00NmFlLWI0YTEtZmI3YjIzZWUyY2Y3XkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_FMjpg_UX1000_.jpg" },
             { title: "Спасти рядового Райана", genre: "Военный, Драма", year: 1998, rating: 8.6, poster: "https://m.media-amazon.com/images/M/MV5BZjhkMDM4MWItZTVjOC00ZDRhLThmYTAtM2I5NzBmNmNlMzI1XkEyXkFqcGdeQXVyNDYyMDk5MTU@._V1_FMjpg_UX1000_.jpg" },
             { title: "Семь", genre: "Триллер, Криминал", year: 1995, rating: 8.6, poster: "https://m.media-amazon.com/images/M/MV5BOTUwODM5MTctZjczMi00OTk4LTg3NWUtNmVhMTAzNTNjYjcyXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_FMjpg_UX1000_.jpg" },
@@ -294,6 +297,8 @@
 
         // Текущий список фильмов
         let currentMovies = [...moviesDatabase];
+        let currentSort = null;
+        let currentGenreFilter = null;
 
         // Функция для отображения фильмов
         function showMovies(movies) {
@@ -312,8 +317,8 @@
                 card.innerHTML = `
                     <div class="movie-poster" style="background-image: url('${movie.poster}')"></div>
                     <div class="movie-info">
-                        <div class="movie-title">${movie.title}</div>
-                        <div class="movie-genre">${movie.genre}</div>
+                        <div class="movie-title" title="${movie.title}">${movie.title}</div>
+                        <div class="movie-genre" title="${movie.genre}">${movie.genre}</div>
                         <div class="movie-year">${movie.year} • <span class="rating">${movie.rating}</span></div>
                     </div>
                 `;
@@ -324,7 +329,10 @@
 
         // Функция поиска
         function searchMovies(query) {
-            if (!query) return moviesDatabase;
+            if (!query.trim()) {
+                showAllMovies();
+                return;
+            }
             
             const lowerQuery = query.toLowerCase();
             currentMovies = moviesDatabase.filter(movie => 
@@ -332,52 +340,76 @@
                 movie.genre.toLowerCase().includes(lowerQuery) ||
                 movie.year.toString().includes(lowerQuery)
             );
-            showMovies(currentMovies);
-            updateActiveFilterButton(null);
+            
+            applyCurrentFilters();
+            updateActiveFilterButtons();
         }
 
         // Функция показа всех фильмов
         function showAllMovies() {
             document.getElementById('movie-input').value = '';
             currentMovies = [...moviesDatabase];
-            showMovies(currentMovies);
-            updateActiveFilterButton(null);
+            currentSort = null;
+            currentGenreFilter = null;
+            applyCurrentFilters();
+            updateActiveFilterButtons();
             return false;
         }
 
-        // Сортировка по рейтингу
-        function sortByRating() {
-            currentMovies.sort((a, b) => b.rating - a.rating);
-            showMovies(currentMovies);
-            updateActiveFilterButton('rating');
+        // Переключение сортировки
+        function toggleSort(sortType) {
+            if (currentSort === sortType) {
+                currentSort = null;
+            } else {
+                currentSort = sortType;
+            }
+            applyCurrentFilters();
+            updateActiveFilterButtons();
         }
 
-        // Сортировка по году выпуска
-        function sortByYear() {
-            currentMovies.sort((a, b) => b.year - a.year);
-            showMovies(currentMovies);
-            updateActiveFilterButton('year');
+        // Переключение фильтра по жанру
+        function toggleGenreFilter(genre) {
+            if (currentGenreFilter === genre) {
+                currentGenreFilter = null;
+            } else {
+                currentGenreFilter = genre;
+            }
+            applyCurrentFilters();
+            updateActiveFilterButtons();
         }
 
-        // Фильтрация по жанру
-        function filterByGenre(genre) {
-            const lowerGenre = genre.toLowerCase();
-            currentMovies = moviesDatabase.filter(movie => 
-                movie.genre.toLowerCase().includes(lowerGenre)
-            );
+        // Применение текущих фильтров и сортировки
+        function applyCurrentFilters() {
+            let filteredMovies = [...moviesDatabase];
+            
+            // Применяем фильтр по жанру
+            if (currentGenreFilter) {
+                const lowerGenre = currentGenreFilter.toLowerCase();
+                filteredMovies = filteredMovies.filter(movie => 
+                    movie.genre.toLowerCase().includes(lowerGenre)
+                );
+            }
+            
+            // Применяем сортировку
+            if (currentSort === 'rating') {
+                filteredMovies.sort((a, b) => b.rating - a.rating);
+            } else if (currentSort === 'year') {
+                filteredMovies.sort((a, b) => b.year - a.year);
+            }
+            
+            currentMovies = filteredMovies;
             showMovies(currentMovies);
-            updateActiveFilterButton(genre);
         }
 
-        // Обновление активной кнопки фильтра
-        function updateActiveFilterButton(filterType) {
+        // Обновление активных кнопок фильтров
+        function updateActiveFilterButtons() {
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
                 
                 if (
-                    (filterType === 'rating' && btn.textContent.includes('рейтингу')) ||
-                    (filterType === 'year' && btn.textContent.includes('году')) ||
-                    (filterType && btn.textContent.toLowerCase().includes(filterType.toLowerCase()))
+                    (currentSort === 'rating' && btn.textContent.includes('рейтингу')) ||
+                    (currentSort === 'year' && btn.textContent.includes('году')) ||
+                    (currentGenreFilter && btn.textContent.toLowerCase().includes(currentGenreFilter.toLowerCase()))
                 ) {
                     btn.classList.add('active');
                 }
